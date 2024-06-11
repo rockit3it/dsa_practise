@@ -1,0 +1,63 @@
+1539. Kth Missing Positive Number
+Description:
+Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
+
+Return the kth positive integer that is missing from this array.
+
+Example 1:
+
+Input: arr = [2,3,4,7,11], k = 5
+Output: 9
+Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9.
+Approaches:
+1)with time complexity of n we have to just check for numbers missing till that particular index
+ for example take arr as arr[0]={}; that is empty and we have k = 5
+1 2 3 4 5 then the fifth missing number will be 5 
+if i changed my array to {1}
+then 1 is no more misssing in the sequence now i have to look for 6th missing number 1 3 4 5 6 6 will be my ans with same approach we have to traverse through the array and if we encounter 
+any arr[i] which is less than the current k we will increase the k value
+ CODE:
+class Solution {
+    public int findKthPositive(int[] arr, int k) {
+        int n = arr.length;
+        for(int i = 0; i < n; i++){
+            if(arr[i] <= k){
+                k++;
+            }
+            else{
+                return k;
+            }
+        }
+        // int max = Arrays.stream(arr).max().getAsInt();
+        return k;
+    }
+}
+
+
+Approach 2:
+with time complexity of O(logn) for this we have to make an observation
+let the given array is 2 3 4 7 11 and value of k is 5 that is we have to find the 5th missing number in the array then we know that the ans will be 9
+  and we can see form the array thet 9 will be commming in between 7 and 11 once we get our pointer on two indexes then just return left+k will be our ans
+to find that index we have to look at the diffrence at position they are and there value 
+      2 3 4 7 11
+      1 1 1 3 6
+  from this we can say that 5 will be lying in between 3 and 6 
+Code:
+class Solution {
+    public int findKthPositive(int[] arr, int k) {
+        int n = arr.length;
+        int start = 0;
+        int end = n-1;
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(Math.abs(arr[mid]-(mid+1)) < k){
+                start = mid+1;
+            }
+            else{
+                end = mid-1;
+            }
+        }
+        return start+k;
+    }
+}
+code:

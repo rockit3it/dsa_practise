@@ -1,0 +1,47 @@
+875. Koko Eating Bananas
+Solved
+Topics
+Companies
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+ 
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+
+approach:
+thinking is siple lets say we decide to eat banana at the rate of 11 bananas per hour then we will be taking 4 hour max to eat all the bananas but we are lazy we have to 
+eat slowly so we will look for more smaller value of k so we will look for increasing the time to eat banana but it should be less than hours other wise guards can come
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int start = 1;
+        int end = Arrays.stream(piles).max().getAsInt();
+        int ans = Integer.MAX_VALUE;
+        while(start <= end){
+            int mid = start+(end-start)/2;
+            int sum = 0;
+            for(int i = 0; i < piles.length; i++){
+                double div = Math.ceil((double)piles[i]/mid);
+                sum += div;
+            }
+            if(sum <= h){
+                ans = mid;
+                end = mid-1; // we are eating fastly we can reduce the speed
+            }
+            else{
+                start = mid+1; // we are taking more time we have to increase the spead of eating
+            }
+
+        }
+        return ans;
+    }
+}

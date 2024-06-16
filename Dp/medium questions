@@ -1,0 +1,72 @@
+q) Mobile numeric keypad(gfg potd)
+
+There is a standard numeric keypad on a mobile phone. You can only press the current button or buttons that are directly up, left, right, or down from it (for ex if you press 5, then pressing 2, 4, 6 & 8 are allowed). Diagonal movements and pressing the bottom row corner buttons (* and #) are prohibited.
+Given a number n, find the number of possible unique sequences of length n that you can create by pressing buttons. You can start from any digit.
+
+Examples
+
+Input: n = 1
+Output: 10
+Explanation: Number of possible numbers are 10 (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)  
+Input: n = 2
+Output: 36
+Explanation: Possible numbers: 00, 08, 11, 12, 14, 22, 21, 23, 25 and so on. If we start with 0, valid numbers will be 00, 08 (count: 2). If we start with 1, valid numbers will be 11, 12, 14 (count: 3). If we start with 2, valid numbers  will be 22, 21, 23,25 (count: 4). If we start with 3, valid numbers will be 33, 32, 36 (count: 3). If we start with 4, valid numbers will be 44,41,45,47 (count: 4). If we start with 5, valid numbers will be 55,54,52,56,58 (count: 5) and so on.
+code:
+class Solution {
+    public long solve(char ch[][], int n, int size, int i, int j, long dp[][][]){
+        if(i < 0 || j < 0|| i > ch.length-1 || j > ch[0].length-1){
+            return 0;
+        }
+        if(ch[i][j] == '*' || ch[i][j] == '#'){
+            return 0;
+        }
+        if(size == n){
+            return 1;
+        }
+        long self = 0;
+        long up = 0;
+        long down = 0;
+        long left = 0;
+        long right = 0;
+        if(dp[i][j][size] != -1){
+            return dp[i][j][size];
+        }
+        // System.out.println(ch[i][j]);
+           self = solve(ch, n, size+1, i, j, dp);
+            up = solve(ch, n, size+1, i-1, j, dp);
+            down = solve(ch, n, size+1, i+1, j, dp);
+            left = solve(ch, n, size+1, i, j-1, dp);
+            right = solve(ch, n, size+1, i, j+1, dp);
+        return dp[i][j][size] = self+up+down+right+left;
+    }
+    public long getCount(int n) {
+        // Your code goes here
+        char ch[][] = new char[4][3];
+        ch[0][0] = '1';
+        ch[0][1] = '2';
+        ch[0][2] = '3';
+        ch[1][0] = '4';
+        ch[1][1] = '5';
+        ch[1][2] = '6';
+        ch[2][0] = '7';
+        ch[2][1] = '8';
+        ch[2][2] = '9';
+        ch[3][0] = '*';
+        ch[3][1] = '0';
+        ch[3][2] = '#';
+        long dp[][][] = new long[5][4][n+1];
+        for(long[][] num : dp){
+            for(long curr[] : num){
+                Arrays.fill(curr, -1);
+            }
+        }
+        long ans = 0;
+        for(int i = 0; i < ch.length; i++){
+            for(int j = 0; j < ch[0].length; j++){
+                ans += solve(ch, n, 1, i, j, dp);
+            }
+        }
+        return ans;
+    }
+}
+

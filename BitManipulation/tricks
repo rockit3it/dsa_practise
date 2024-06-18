@@ -87,5 +87,7 @@ class Solution{
 
 7) how to check if a number if power of two:
 by one observation that if any number is power of two means there will be only one set bit
+and we can check that by doing n&(n-1) do it until n becomes 0
+
 
 

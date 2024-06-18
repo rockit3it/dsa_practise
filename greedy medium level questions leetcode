@@ -94,5 +94,32 @@ class Solution {
         return count;
     }
 }
-        
+
+
+826. Most Profit Assigning Work
+
+two approaches:
+i) one can be solved by using normal sorting of both worker array and profit array this is done by me with tc of O(nlongn + mlogm)
+2) this can be solved using make a array of size maxof profit + 1
+code:
+
+class Solution {
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        int maxProfit = Arrays.stream(worker).max().getAsInt();
+        int jobs[] = new int[maxProfit+1];
+        for(int i = 0; i < difficulty.length; i++){
+            if(difficulty[i] <= maxProfit){
+                jobs[difficulty[i]] = Math.max(jobs[difficulty[i]], profit[i]); // this for if any repeating job but with diffrent profit so we will take only maximum profit among them
+            }
+        }
+        for(int i = 1; i < jobs.length; i++){
+            jobs[i] = Math.max(jobs[i], jobs[i-1]); // this is to store the max value upto now as if current index of difficulty is lets say 10(difficulty[i] = 10) then the difficulty less than this will also valid so we take maximum upto current difficulty[i]
+        }
+        int netProfit = 0;
+        for(int i = 0; i < worker.length; i++){
+            netProfit += jobs[worker[i]];
+        }
+        return netProfit;
+    }
+}
      

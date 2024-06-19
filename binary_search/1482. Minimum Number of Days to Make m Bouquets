@@ -1,0 +1,60 @@
+You are given an integer array bloomDay, an integer m and an integer k.
+
+You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.
+
+The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet.
+
+Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1.
+Example 3:
+
+Input: bloomDay = [7,7,7,7,12,7,7], m = 2, k = 3
+Output: 12
+Explanation: We need 2 bouquets each should have 3 flowers.
+Here is the garden after the 7 and 12 days:
+After day 7: [x, x, x, x, _, x, x]
+We can make one bouquet of the first three flowers that bloomed. We cannot make another bouquet from the last three flowers that bloomed because they are not adjacent.
+After day 12: [x, x, x, x, x, x, x]
+It is obvious that we can make two bouquets in different ways.
+
+Approach:
+first we can think of to start from the minimum day in the array and go upto maximum day and inside that we can check if we are geeting adjacen values equal to k or not by using count \
+variable if arr[j] <= ith day then count++ elese count = 0 return i if number of pairs of size k >= m
+code:
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int n = bloomDay.length;
+        int max = Arrays.stream(bloomDay).max().getAsInt();
+        int start = Arrays.stream(bloomDay).min().getAsInt();
+        int end = max;
+        int ans = -1;
+        while(start <= end){
+            int mid = start+(end-start)/2; 
+            int maxCount = Integer.MIN_VALUE;
+            int num = 0;
+            int count = 0;
+            for(int j = 0; j < n; j++){
+                if(bloomDay[j] <= mid){
+                    count++;
+                }
+                else{
+                    count = 0;
+                }
+                if(count == k){
+                    count = 0;
+                    num++;
+                }
+                if(num >= m){
+                    ans = mid;
+                    break;
+                }
+            }
+            if(num >= m){
+                end = mid-1;
+            }
+            else{
+                start = mid+1;
+            }
+        }
+        return ans;
+    }
+}

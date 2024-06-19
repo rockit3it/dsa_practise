@@ -85,9 +85,73 @@ class Solution{
 }
 
 
-7) how to check if a number if power of two:
+8) how to check if a number if power of two:
 by one observation that if any number is power of two means there will be only one set bit
 and we can check that by doing n&(n-1) do it until n becomes 0
 
 
+9) 	
+Count number of bits to be flipped to convert A to B
+class Solution {
+    public int minBitFlips(int start, int goal) {
+        int Xor = start ^ goal;
+        int count = 0;
+        while(Xor != 0){
+            Xor = Xor & (Xor-1);
+            count++;
+        }
+        return count;
+    }
+}
+10) to find the xor of values from 1 to n
+value Xor
+1      1
+1^2    3
+1^2^3  0
+1^2^3^4 4
 
+1^2^3^4^5 1
+1^2^3^4 4^5^6 7
+1^2^3^4 4^5^6^7 0
+1^2^3^4 4^5^6^7^8 8
+
+
+from here we can observe a pattern that if any 
+number % 4 == 1 the xor will be 1
+number % 4 == 2 the xor will be number+1
+number % 4 == 3 the xor will be 0
+number % 4 == 4 the xor will be number it self
+
+by the same method we can also find the xor from the l to r
+
+l = 4 r = 8
+we will find int a = xor of 1 to 4
+and we will find int b = xor of 1 to 8
+again we will take xor of both
+int ans = a^b;
+
+code:
+class Solution {
+    public static int findXOR(int l, int r) {
+        int mod = 0;
+        if((l-1 )% 4 == 1){
+            mod = 1;
+        }
+        if((l-1) % 4 == 2){
+            mod = l;
+        }
+        if((l-1) % 4 == 0){
+            mod = l-1;
+        }
+        if(r % 4 == 1){
+            return 1^mod;
+        }
+        if(r % 4 == 2){
+            return (r+1)^mod;
+        }
+        if(r % 4 == 3){
+            return 0^mod;
+        }
+        return r^mod;
+    }
+}

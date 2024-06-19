@@ -155,3 +155,56 @@ class Solution {
         return r^mod;
     }
 }
+
+
+11) to find the subarrays of a array 
+Given an integer array nums of unique elements, return all possible 
+subsets
+ (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+
+in this question the observation is the total subarrays will be 2^n if n is the size of array
+000
+001
+010
+011
+100
+101
+110
+111
+means for size 3 we will running the loop for 0 to 2^n means 1<<n times and where ever 0 occurs from left to right in binary numbers then not take it 1 take that index .lsb represents oth index of array
+
+code:
+
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> al = new ArrayList<>();
+        for(int i = 0; i < (1<<nums.length); i++){
+            List<Integer> temp = new ArrayList<>();
+            int idx = 0;
+            int num = i;
+            while(num != 0){
+                if((num & 1) == 1){
+                    temp.add(nums[idx]);
+                }
+                idx++;
+                num = num >> 1;
+            }
+            al.add(temp);
+        }
+        return al;
+    }
+}

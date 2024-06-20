@@ -1,0 +1,172 @@
+Note 
+to solve this type of questions we need to just make a binary search in answer which is min of maximum like this something is given and inside that while loop we have to use a for loop to iterate on the whole array
+
+
+AGGRCOW - Aggressive cows
+#binary-search
+Farmer John has built a new long barn, with N (2 <= N <= 100,000) stalls. The stalls are located along a straight line at positions x1 ... xN (0 <= xi <= 1,000,000,000).
+
+His C (2 <= C <= N) cows don't like this barn layout and become aggressive towards each other once put into a stall. To prevent the cows from hurting each other, FJ wants to assign the cows to the stalls, such that the minimum distance between any two of them is as large as possible. What is the largest minimum distance?
+Input
+t – the number of test cases, then t test cases follows.
+* Line 1: Two space-separated integers: N and C
+* Lines 2..N+1: Line i+1 contains an integer stall location, xi
+Output
+For each test case output one integer: the largest minimum distance.
+Example
+Input:
+
+1
+5 3
+1
+2
+8
+4
+9
+Output:
+
+3
+
+
+Approach:
+in this case we have to try for each distances from 1 to max value we have to try for binary search
+import java.util.*;
+always prefer to sort the array
+Code:
+
+public class Codeforces {
+    public static boolean isValid(int arr[], int mid, int c){
+        int cows = 1;
+        int prev = arr[0];
+        for(int i = 1; i < arr.length; i++){
+            if(arr[i] - prev >= mid){
+                prev = arr[i];
+                cows++;
+            }
+            if(cows >= c){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-- > 0){
+            int n = sc.nextInt();
+            int c = sc.nextInt();
+            int arr[] = new int[n];
+            for(int i = 0; i < n; i++){
+                arr[i] = sc.nextInt();
+            }
+            Arrays.sort(arr);
+            int start = 1;
+            int ans = 0;
+            int end = Arrays.stream(arr).max().getAsInt();
+            while (start <= end){
+                int mid = start + (end-start)/2;
+                if(isValid(arr, mid, c)){
+                    start = mid+1;
+                    ans = mid;
+                }
+                else{
+                    end = mid-1;
+                }
+            }
+            System.out.println(ans);
+        }
+    }
+}
+
+2064. Minimized Maximum of Products Distributed to Any Store
+You are given an integer n indicating there are n specialty retail stores. There are m product types of varying amounts, which are given as a 0-indexed integer array quantities, where quantities[i] represents the number of products of the ith product type.
+
+You need to distribute all products to the retail stores following these rules:
+
+A store can only be given at most one product type but can be given any amount of it.
+After distribution, each store will have been given some number of products (possibly 0). Let x represent the maximum number of products given to any store. You want x to be as small as possible, i.e., you want to minimize the maximum number of products that are given to any store.
+Return the minimum possible x.
+
+ 
+
+Example 1:
+
+Input: n = 6, quantities = [11,6]
+Output: 3
+Explanation: One optimal way is:
+- The 11 products of type 0 are distributed to the first four stores in these amounts: 2, 3, 3, 3
+- The 6 products of type 1 are distributed to the other two stores in these amounts: 3, 3
+The maximum number of products given to any store is max(2, 3, 3, 3, 3, 3) = 3.
+
+
+code:
+class Solution {
+    public boolean isPossible(int mid, int temp, int quantities[], int len){
+        int ans = 0;
+        for(int i = 0; i < len; i++){
+            int div = (int)Math.ceil((double)quantities[i]/mid);
+            ans += div;
+        }
+        if(ans <= temp){
+            return true;
+        }
+        return false;
+    }
+    public int minimizedMaximum(int n, int[] quantities) {
+        int start = 1;
+        int len = quantities.length;
+        int ans = Integer.MAX_VALUE;
+        int end = Arrays.stream(quantities).max().getAsInt();
+        while(start <= end){
+            int mid = start + (end - start)/2;
+            int temp = n;
+            if(isPossible(mid, temp, quantities, len)){
+                ans = Math.min(ans, mid);
+                end = mid-1;
+            }
+            else{
+                start = mid+1;
+            }
+        }
+        return ans;
+    }
+}
+// this is same as aggresive cows
+1552. Magnetic Force Between Two Balls
+
+code:
+class Solution {
+    public boolean possible(int mid, int position[], int m){
+        int prev = position[0];
+        int balls = 1;
+        for(int i = 1; i < position.length; i++){
+            if((position[i]-prev) >= mid){
+                prev = position[i];
+                balls++;
+            }
+            if(balls >= m){
+                return true;
+            }
+        }
+        return false;
+    }
+    public int maxDistance(int[] position, int m) {
+        int n = position.length;
+        Arrays.sort(position);
+        int ans = Integer.MIN_VALUE;
+        int start = 1;
+        int end = Arrays.stream(position).max().getAsInt();
+        while(start <= end){
+            // System.out.println(start+" "+end);
+            int mid = start + (end-start)/2;
+            if(possible(mid, position, m)){
+                start = mid+1;
+                ans = Math.max(mid, ans);
+            }
+            else{
+                end = mid-1;
+            }
+        }
+        return ans;
+    }
+}

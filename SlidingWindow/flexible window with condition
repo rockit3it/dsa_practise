@@ -37,3 +37,58 @@ class Solution {
         return atMost(k, nums) - atMost(k-1, nums);
     }
 }
+
+
+
+1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+Example 1:
+
+Input: nums = [8,2,4,7], limit = 4
+Output: 2 
+Explanation: All subarrays are: 
+[8] with maximum absolute diff |8-8| = 0 <= 4.
+[8,2] with maximum absolute diff |8-2| = 6 > 4. 
+[8,2,4] with maximum absolute diff |8-2| = 6 > 4.
+[8,2,4,7] with maximum absolute diff |8-2| = 6 > 4.
+[2] with maximum absolute diff |2-2| = 0 <= 4.
+[2,4] with maximum absolute diff |2-4| = 2 <= 4.
+[2,4,7] with maximum absolute diff |2-7| = 5 > 4.
+[4] with maximum absolute diff |4-4| = 0 <= 4.
+[4,7] with maximum absolute diff |4-7| = 3 <= 4.
+[7] with maximum absolute diff |7-7| = 0 <= 4. 
+Therefore, the size of the longest subarray is 2
+
+
+code:
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int i = 0;
+        int length = Integer.MIN_VALUE;
+        while(i < nums.length){
+            min = Math.min(nums[i], min);
+            max = Math.max(nums[i], max);
+            int j = i;
+            while(j < nums.length && (max-min) <= limit){
+                j++;
+                if(j < nums.length){
+                    min = Math.min(nums[j], min);
+                    max = Math.max(nums[j], max);
+                }
+            }
+            length = Math.max((j-i), length);
+            if(j == nums.length){
+                return length;
+            }
+            if(min == nums[i]){
+                min = Integer.MAX_VALUE;
+            }
+            if(max == nums[i]){
+                max = Integer.MIN_VALUE;
+            }
+            i++;
+        }
+        return length;
+    }
+}

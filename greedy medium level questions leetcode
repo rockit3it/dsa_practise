@@ -123,3 +123,47 @@ class Solution {
     }
 }
      
+995. Minimum Number of K Consecutive Bit Flips
+
+ou are given a binary array nums and an integer k.
+
+A k-bit flip is choosing a subarray of length k from nums and simultaneously changing every 0 in the subarray to 1, and every 1 in the subarray to 0.
+
+Return the minimum number of k-bit flips required so that there is no 0 in the array. If it is not possible, return -1.
+
+A subarray is a contiguous part of an array.
+
+ 
+
+Example 1:
+
+Input: nums = [0,1,0], k = 1
+Output: 2
+Explanation: Flip nums[0], then flip nums[2].
+
+
+code:
+class Solution {
+    public int minKBitFlips(int[] nums, int k) {
+        // flipped count array we have used for storing the subarrays particular index is flipped or not
+        int flippedCount[] = new int[nums.length];
+        int timesFlipped = 0;
+        int ans = 0;
+        for(int i = 0; i < nums.length; i++){
+            // this is to reduce the flipped times to reduce the current flips to previousFlipps-currFlips->> here currFlips is refring to flip count
+            if(i >= k){
+                timesFlipped -= flippedCount[i-k];
+            }
+            // if flipp count is 1 or odd then 1-> 0 here we need to flip 1->0 to convert 1->1 1->0->1
+            // if flipp count is 2 or even then 0->1 here we need to flip 0->1
+            if(timesFlipped%2 == 1 && nums[i] == 1 || timesFlipped%2 == 0 && nums[i] == 0){
+                if(i+k > nums.length) return -1;
+                timesFlipped++;
+                flippedCount[i] = 1;
+                ans++;
+            }
+        } 
+        return ans;
+    }
+}
+approach2: ter

@@ -204,3 +204,90 @@ class Solution {
         return ans;
     }
 }
+
+
+
+
+Problem statement
+book allocation problem, painters partition, split array largest sum all of these question uses the same concepts
+Given an array ‘arr’ of integer numbers, ‘arr[i]’ represents the number of pages in the ‘i-th’ book.
+
+
+
+There are ‘m’ number of students, and the task is to allocate all the books to the students.
+
+
+
+Allocate books in such a way that:
+
+1. Each student gets at least one book.
+2. Each book should be allocated to only one student.
+3. Book allocation should be in a contiguous manner.
+
+
+You have to allocate the book to ‘m’ students such that the maximum number of pages assigned to a student is minimum.
+
+
+
+If the allocation of books is not possible, return -1.
+
+
+Sample Input 1:
+4 2
+12 34 67 90
+Sample Output 1:
+113
+
+code:
+import java.util.ArrayList;
+public class Solution {
+    public static int isPossiible(int pages, ArrayList<Integer> al){
+        int count = 1;
+        int sum = 0;
+        for(int i = 0; i < al.size(); i++){
+            if((sum + al.get(i)) <= pages){
+                sum += al.get(i);
+            }
+            else{
+                sum = al.get(i);
+                count++;
+            }
+        }
+
+        // System.out.println(count+" "+pages);
+        // if(count == m){
+        //     return true;
+        // }
+        // return false;
+        return count;
+    }
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        // Write your code here.
+        if(arr.size() < m){
+            return -1;
+        }
+        int start = 0;
+        int end =  0;
+        int ans = 0;
+        for(int i = 0; i < arr.size(); i++){
+            if(arr.get(i) > start){
+                start = arr.get(i);
+            }
+            end += arr.get(i);
+        }
+        // System.out.println(start+" "+end);
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            int count = isPossiible(mid, arr);
+            if(count > m){
+                // ans = mid;
+                start = mid+1;
+                
+            }
+            else{
+                end = mid-1;
+            }
+        }
+        return start;
+    }
+}
